@@ -1,6 +1,7 @@
 package com.android.countdowntimer;
 
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -25,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
     Button start;
     TextView selectedtime;
     Button select;
+    TextView remtime;
     private CountDownTimer countdowntimer;
     public Boolean mtimerunning = false;
-    private long timeleft = starttime;
+    private long timeleft;
     private long endtime;
 
     @Override
@@ -46,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar mcurrentTime = Calendar.getInstance();
-                int hours = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                final int hours = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                final int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -78,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
                         String aTime = new StringBuilder().append(hour).append(':')
                                 .append(min ).append(" ").append(timeSet).toString();
                         selectedtime.setText(aTime);
+                        remtime.setVisibility(View.VISIBLE);
+
+                        aTime = new StringBuilder().append(hour).append(':')
+                                .append(String.valueOf(minutes) ).append(" ").append(timeSet).toString();
+                        remtime.setText("DownCounter Time :"+aTime);
+
                     }
                 }, hours, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -145,30 +153,65 @@ public class MainActivity extends AppCompatActivity {
         String t = String.format(Locale.getDefault(),"%02d:%02d",min,sec);
         time.setText(t);
         }
+//
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putLong("timeleft",timeleft);
+//        outState.putBoolean("mtimerunning",mtimerunning);
+//        outState.putLong("endtime",endtime);
+//        outState.putString("time",selectedtime.getText().toString());
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        timeleft = savedInstanceState.getLong("timeleft");
+//        mtimerunning = savedInstanceState.getBoolean("mtimerunning");
+//        selectedtime.setText(savedInstanceState.getString("time"));
+//        updatebutton();
+//        update();
+//        if (mtimerunning)
+//        {
+//            endtime = savedInstanceState.getLong("endtime");
+//            timeleft = endtime - System.currentTimeMillis();
+//            starttimer();
+//        }
+//
+//    }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putLong("timeleft",timeleft);
-        outState.putBoolean("mtimerunning",mtimerunning);
-        outState.putLong("endtime",endtime);
-        outState.putString("time",selectedtime.getText().toString());
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("timeleft",timeleft);
+        editor.putBoolean("mtimerunning",mtimerunning);
+        editor.putLong("endtime",endtime);
+        editor.putString("time",selectedtime.getText().toString());
+        editor.apply();
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        timeleft = savedInstanceState.getLong("timeleft");
-        mtimerunning = savedInstanceState.getBoolean("mtimerunning");
-        selectedtime.setText(savedInstanceState.getString("time"));
-        updatebutton();
-        update();
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        timeleft = prefs.getLong("timeleft",starttime);
+        mtimerunning = prefs.getBoolean("mtimerunning",false);
+        selectedtime.setText(prefs.getString("time","00:00"));
+
         if (mtimerunning)
         {
-            endtime = savedInstanceState.getLong("endtime");
+            endtime = prefs.getLong("endtime",0);
             timeleft = endtime - System.currentTimeMillis();
-            starttimer();
+            if (timeleft < 0) {
+                mtimerunning = false;
+                timeleft = 0;
+                updatebutton();
+                update();
+            }
+            else
+                starttimer();
         }
-
     }
 }
