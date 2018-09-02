@@ -1,5 +1,6 @@
 package com.android.countdowntimer;
 
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     mtimerunning = false;
                     countdowntimer.cancel();
                     start.setText("start");
+                    start.setBackgroundColor(Color.GREEN);
                 }
             }
         });
@@ -56,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 mtimerunning = false;
                 timeleft = starttime;
+                start.setBackgroundColor(Color.GREEN);
                 start.setText("Start");
-                time.setText("Begin Quiz");
+                update();
             }
         }.start();
         mtimerunning =true;
+        start.setBackgroundColor(Color.GRAY);
         start.setText("Pause");
 
     }
@@ -68,10 +72,12 @@ public class MainActivity extends AppCompatActivity {
     public void updatebutton() {
         if (mtimerunning)
         {
+            start.setBackgroundColor(Color.GRAY);
             start.setText("Pause");
         }
         else
         {
+            start.setBackgroundColor(Color.GREEN);
             start.setText("Start");
         }
 
