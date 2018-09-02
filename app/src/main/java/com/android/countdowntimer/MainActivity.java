@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer countdowntimer;
     public Boolean mtimerunning = false;
     private long timeleft = starttime;
+    private long endtime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void starttimer() {
+        endtime = System.currentTimeMillis() + timeleft;
         countdowntimer = new CountDownTimer(timeleft,1000) {
             @Override
             public void onTick(long l) {
@@ -54,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 mtimerunning = false;
                 timeleft = starttime;
-                start.setText("Reset");
-                update();
+                start.setText("Start");
+                time.setText("Begin the Quiz");
             }
         }.start();
         mtimerunning =true;
@@ -63,6 +65,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void updatebutton() {
+        if (mtimerunning)
+        {
+            start.setText("Pause");
+        }
+        else
+        {
+            start.setText("Start");
+        }
+
+    }
     private void update() {
         int min = (int) (timeleft/1000)/60;
         int sec = (int) (timeleft/1000)%60;
@@ -71,4 +84,27 @@ public class MainActivity extends AppCompatActivity {
         time.setText(t);
         }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("timeleft",timeleft);
+        outState.putBoolean("mtimerunning",mtimerunning);
+        outState.putLong("endtime",endtime);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        timeleft = savedInstanceState.getLong("timeleft");
+        mtimerunning = savedInstanceState.getBoolean("mtimerunning");
+        updatebutton();
+        update();
+        if (mtimerunning)
+        {
+            endtime = savedInstanceState.getLong("endtime");
+            timeleft = endtime - System.currentTimeMillis();
+            starttimer();
+        }
+
+    }
 }
