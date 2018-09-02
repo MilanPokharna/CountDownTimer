@@ -10,8 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
     TextView remtime;
     private CountDownTimer countdowntimer;
     public Boolean mtimerunning = false;
-    private long timeleft;
+    private long timeleft = 0;
     private long endtime;
+    public String ttt;
+    public int mon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         time = (TextView)findViewById(R.id.textView);
         selectedtime= (TextView)findViewById(R.id.selecttime);
+        remtime = (TextView)findViewById(R.id.counttime);
         update();
         start = (Button)findViewById(R.id.reset);
         select = (Button)findViewById(R.id.select);
@@ -50,13 +52,57 @@ public class MainActivity extends AppCompatActivity {
                 Calendar mcurrentTime = Calendar.getInstance();
                 final int hours = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 final int minute = mcurrentTime.get(Calendar.MINUTE);
+
+                final int date = mcurrentTime.get(Calendar.DATE);
+                mon = mcurrentTime.get(Calendar.MONTH);
+                final int year = mcurrentTime.get(Calendar.YEAR);
+                mon=mon+1;
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String h="",m="";
+                        String h2="",m2="";
 
                         int hour = selectedHour;
                         int minutes = selectedMinute;
+                        int hour2 = selectedHour;
+                        int minutes2 = selectedMinute;
+
+                        if (minutes2 < 10)
+                            m2 = "0" + minutes2 ;
+                        else
+                            m2 = ""+minutes2;
+                        if (hour2 < 10)
+                            h2 = "0" + hour2 ;
+                        else
+                            h2 = ""+hour2;
+
+                        if (minutes2 < minute)
+                        {
+                            minutes2 = minutes2 + 60 - minute;
+
+                            hour2 = hour2-1;
+                            if (hour2 < hours)
+                            {
+                                hour2 = hour2 + 24 - hours;
+                            }
+                            else
+                                hour2 = hour2 - hours;
+                        }
+                        else {
+                            minutes2 = minutes2 - minute;
+                            if (hour2 < hours)
+                            {
+                                hour2 = hour2 + 24 - hours;
+                            }
+                            else
+                                hour2 = hour2 - hours;
+                        }
+//                        Toast.makeText(MainActivity.this, "hour of the day :"+hours, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "hour selected :"+hour, Toast.LENGTH_SHORT).show();
+
+
                         String timeSet = "";
                         if (hour > 12) {
                             hour -= 12;
@@ -82,10 +128,18 @@ public class MainActivity extends AppCompatActivity {
                         selectedtime.setText(aTime);
                         remtime.setVisibility(View.VISIBLE);
 
-                        aTime = new StringBuilder().append(hour).append(':')
-                                .append(String.valueOf(minutes) ).append(" ").append(timeSet).toString();
-                        remtime.setText("DownCounter Time :"+aTime);
-
+                        if (minutes2 < 10)
+                            m = "0" + minutes2 ;
+                        else
+                            m = ""+minutes2;
+                        if (hour2 < 10)
+                            h = "0" + hour2 ;
+                        else
+                            h = ""+hour2;
+                        remtime.setText("DownCounter Time \n "+h+"H : "+m+"M");
+                        Toast.makeText(MainActivity.this, "date :"+date+"-"+mon+"-"+year+" "+h2+":"+m2+":00", Toast.LENGTH_SHORT).show();
+                        ttt = +date+"-"+mon+"-"+year+" "+h2+":"+m2+":00";
+                        gettime();
                     }
                 }, hours, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -97,8 +151,11 @@ public class MainActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!mtimerunning)
+                if(!mtimerunning){
+                    if (timeleft == 0)
+                        timeleft = 6000;
                     starttimer();
+                }
                 else {
                     mtimerunning = false;
                     countdowntimer.cancel();
@@ -121,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 mtimerunning = false;
-                timeleft = starttime;
+                timeleft = 0;
                 start.setBackgroundColor(Color.GREEN);
                 start.setText("Start");
                 update();
@@ -147,10 +204,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void update() {
+        int hour = (int) (timeleft/1000)/60/60;
         int min = (int) (timeleft/1000)/60;
         int sec = (int) (timeleft/1000)%60;
 
-        String t = String.format(Locale.getDefault(),"%02d:%02d",min,sec);
+        String t = String.format(Locale.getDefault(),"%02d:%02d:%02d",hour,min,sec);
         time.setText(t);
         }
 //
@@ -212,6 +270,25 @@ public class MainActivity extends AppCompatActivity {
             }
             else
                 starttimer();
+        }
+    }
+
+    public void gettime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+//        String dateString = "22-03-2017 11:18:32";
+//        ttt="02-09-2018 18:00:00";
+        try{
+            //formatting the dateString to convert it into a Date
+            Date date = sdf.parse(ttt);
+            Calendar calendar = Calendar.getInstance();
+            Toast.makeText(this, "Given Time in milliseconds : "+date.getTime(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Current time :"+System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Current time2 :"+calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
+            timeleft = date.getTime() - System.currentTimeMillis();
+            starttimer();
+            //Setting the Calendar date and time to the given date and time
+        }catch(ParseException e){
+            e.printStackTrace();
         }
     }
 }
