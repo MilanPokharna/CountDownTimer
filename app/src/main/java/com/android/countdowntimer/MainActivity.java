@@ -248,6 +248,11 @@ public class MainActivity extends AppCompatActivity {
         editor.putLong("endtime",endtime);
         editor.putString("time",selectedtime.getText().toString());
         editor.apply();
+
+        if (countdowntimer != null)
+        {
+            countdowntimer.cancel();
+        }
     }
 
     @Override
