@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 mtimerunning = false;
                 timeleft = starttime;
                 start.setText("Start");
-                time.setText("Begin the Quiz");
+                time.setText("Begin Quiz");
             }
         }.start();
         mtimerunning =true;
