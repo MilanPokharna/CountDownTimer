@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         else
                             h = ""+hour2;
                         remtime.setText("DownCounter Time \n "+h+"H : "+m+"M");
-                        Toast.makeText(MainActivity.this, "date :"+date+"-"+mon+"-"+year+" "+h2+":"+m2+":00", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "date :"+date+"-"+mon+"-"+year+" "+h2+":"+m2+":00", Toast.LENGTH_SHORT).show();
                         ttt = +date+"-"+mon+"-"+year+" "+h2+":"+m2+":00";
                         gettime();
                     }
@@ -281,9 +281,9 @@ public class MainActivity extends AppCompatActivity {
             //formatting the dateString to convert it into a Date
             Date date = sdf.parse(ttt);
             Calendar calendar = Calendar.getInstance();
-            Toast.makeText(this, "Given Time in milliseconds : "+date.getTime(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Current time :"+System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Current time2 :"+calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Given Time in milliseconds : "+date.getTime(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Current time :"+System.currentTimeMillis(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Current time2 :"+calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
             timeleft = date.getTime() - System.currentTimeMillis();
             starttimer();
             //Setting the Calendar date and time to the given date and time
