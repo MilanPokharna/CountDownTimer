@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         time = (TextView)findViewById(R.id.textView);
         update();
         start = (Button)findViewById(R.id.reset);
+        start.setBackgroundColor(Color.GREEN);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
