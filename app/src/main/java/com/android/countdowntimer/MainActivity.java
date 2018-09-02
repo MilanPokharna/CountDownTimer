@@ -15,9 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final long starttime = 6000;
     TextView time;
-    Button reset;
+    Button start;
     private CountDownTimer countdowntimer;
-    public Boolean mtimerunning;
+    public Boolean mtimerunning = false;
     private long timeleft = starttime;
 
     @Override
@@ -26,13 +26,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         time = (TextView)findViewById(R.id.textView);
-        reset = (Button)findViewById(R.id.reset);
-
-        starttimer();
-        reset.setOnClickListener(new View.OnClickListener() {
+        update();
+        start = (Button)findViewById(R.id.reset);
+        start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resettime();
+                if(!mtimerunning)
+                    starttimer();
+                else {
+                    mtimerunning = false;
+                    countdowntimer.cancel();
+                    start.setText("start");
+                }
             }
         });
     }
@@ -47,11 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
                 mtimerunning = false;
+                timeleft = starttime;
+                start.setText("Reset");
+                update();
             }
         }.start();
         mtimerunning =true;
+        start.setText("Pause");
 
     }
 
@@ -63,8 +71,4 @@ public class MainActivity extends AppCompatActivity {
         time.setText(t);
         }
 
-    private void resettime() {
-        timeleft = starttime;
-        starttimer();
-    }
 }

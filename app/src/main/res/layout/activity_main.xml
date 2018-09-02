@@ -15,7 +15,7 @@
         android:textSize="64sp"
         android:text="TextView" />
     <Button
-        android:text="reset"
+        android:text="start"
         android:id="@+id/reset"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textView"
