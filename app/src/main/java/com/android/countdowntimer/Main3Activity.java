@@ -51,7 +51,7 @@ public class Main3Activity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 mtimerunning = false;
-                update();
+                timer.setText("Quiz has been Started");
             }
         }.start();
         mtimerunning =true;
@@ -79,6 +79,7 @@ public class Main3Activity extends AppCompatActivity {
                     if (date.getTime() < System.currentTimeMillis())
                     {
                         Toast.makeText(Main3Activity.this, "Quiz Time Gone", Toast.LENGTH_SHORT).show();
+                        timer.setText("Quiz has been Started");
                     }
                     else {
                         timeleft = date.getTime() - System.currentTimeMillis();
@@ -121,7 +122,7 @@ public class Main3Activity extends AppCompatActivity {
             if (timeleft < 0) {
                 mtimerunning = false;
                 timeleft = Long.valueOf(0);
-                update();
+                timer.setText("Quiz has been Started");
             }
             else
                 starttimer();
