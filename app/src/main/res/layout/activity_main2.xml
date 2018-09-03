@@ -4,55 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Main2Activity">
 
     <Button
         android:layout_marginTop="16dp"
+        android:id="@+id/buttondate"
         android:layout_centerHorizontal="true"
-        android:text="Select time"
-        android:id="@+id/select"
+        android:text="Select Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
-        android:layout_below="@id/select"
-        android:id="@+id/selecttime"
-        android:text="Please select Time"
-        android:textSize="32sp"
+        android:layout_marginTop="16dp"
+        android:id="@+id/textdate"
+        android:textSize="24sp"
+        android:layout_below="@id/buttondate"
         android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_above="@+id/textView"
-        android:layout_below="@id/selecttime"
-        android:id="@+id/counttime"
-        android:textSize="32sp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="56sp"
-        android:text="TextView" />
-    <Button
-        android:text="start"
-        android:id="@+id/reset"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:text="Main App ->"
-        android:textSize="16sp"
-        android:onClick="next"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/textdate"
+        android:id="@+id/buttontime"
+        android:layout_centerHorizontal="true"
+        android:text="Select Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="16dp"
+        android:id="@+id/texttime"
+        android:textSize="24sp"
+        android:layout_below="@id/buttontime"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/texttime"
+        android:id="@+id/buttonsend"
+        android:onClick="send"
+        android:layout_centerHorizontal="true"
+        android:text="Send Data to firebase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:id="@+id/next"
+        android:onClick="timer"
+        android:layout_centerHorizontal="true"
+        android:text="go to timer ->"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+        android:layout_height="wrap_content" />
 </RelativeLayout>

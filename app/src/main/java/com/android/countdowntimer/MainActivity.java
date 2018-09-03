@@ -1,6 +1,7 @@
 package com.android.countdowntimer;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.CountDownTimer;
@@ -270,5 +271,10 @@ public class MainActivity extends AppCompatActivity {
         }catch(ParseException e){
             e.printStackTrace();
         }
+    }
+
+    public void next(View view) {
+        Intent intent = new Intent(MainActivity.this,Main2Activity.class);
+        startActivity(intent);
     }
 }
