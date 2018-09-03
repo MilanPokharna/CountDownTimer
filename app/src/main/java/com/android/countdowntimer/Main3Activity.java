@@ -24,7 +24,7 @@ import java.util.Locale;
 public class Main3Activity extends AppCompatActivity {
     TextView timer;
     public Long endtime= Long.valueOf(0),timeleft= Long.valueOf(00);
-    String sdate="";
+    String sdate="",sd="";
     public CountDownTimer countdowntimer;
     public Boolean mtimerunning=false;
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("quiz");
@@ -36,9 +36,53 @@ public class Main3Activity extends AppCompatActivity {
         timer = (TextView)findViewById(R.id.counttimer);
         SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
         timeleft = prefs.getLong("timeleft",0);
+        sd= prefs.getString("sd","0");
         mtimerunning = prefs.getBoolean("mtimerunning",false);
-        if(!mtimerunning)
-            gettime();
+
+        reference.child("1").child("quiztime").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                sdate = dataSnapshot.getValue().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+                //Toast.makeText(Main3Activity.this, "time "+sdate, Toast.LENGTH_SHORT).show();
+                if(!sd.equals(sdate))
+                {
+                    if (countdowntimer!=null)
+                        countdowntimer.cancel();
+                    sd=sdate;
+                    try{
+                        //formatting the dateString to convert it into a Date
+                        Date date = sdf.parse(sdate);
+                        if (date.getTime() < System.currentTimeMillis())
+                        {
+                            Toast.makeText(Main3Activity.this, "Quiz Time Gone", Toast.LENGTH_SHORT).show();
+                            timer.setText("Quiz has been Started");
+                        }
+                        else {
+                            timeleft = date.getTime() - System.currentTimeMillis();
+                            mtimerunning =true;
+                            SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putLong("timeleft",timeleft);
+                            editor.putBoolean("mtimerunning",mtimerunning);
+                            editor.putLong("endtime",0);
+                            editor.putString("sd",sd);
+                            editor.apply();
+                            starttimer();
+                        }
+
+                        //Setting the Calendar date and time to the given date and time
+                    }catch(ParseException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -62,46 +106,16 @@ public class Main3Activity extends AppCompatActivity {
     }
 
     private void update() {
-        int hour = (int) (timeleft/1000)/60/60;
-        int min = (int) (timeleft/1000)/60;
+        int hour = (int) ((timeleft/1000)/60/60)%60;
+        final int m = (int)((timeleft/1000/60))%60;
+//        int min = (int) (timeleft/1000)/60;
         int sec = (int) (timeleft/1000)%60;
 
         String t = String.format(Locale.getDefault(),"%02dh",hour);
-        String t2 = String.format(Locale.getDefault(),"%02dm",min);
-        String t3 = String.format(Locale.getDefault(),"02ds",sec);
+//        String t2 = String.format(Locale.getDefault(),"%02d",min);
+        String t2 = String.format(Locale.getDefault(),"%02d",m);
+        String t3 = String.format(Locale.getDefault(),"%02ds",sec);
         timer.setText(t+":"+t2+":"+t3);
-    }
-    public void gettime() {
-
-        reference.child("1").child("quiztime").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                sdate = dataSnapshot.getValue().toString();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-                //Toast.makeText(Main3Activity.this, "time "+sdate, Toast.LENGTH_SHORT).show();
-                try{
-                    //formatting the dateString to convert it into a Date
-                    Date date = sdf.parse(sdate);
-                    if (date.getTime() < System.currentTimeMillis())
-                    {
-                        Toast.makeText(Main3Activity.this, "Quiz Time Gone", Toast.LENGTH_SHORT).show();
-                        timer.setText("Quiz has been Started");
-                    }
-                    else {
-                        timeleft = date.getTime() - System.currentTimeMillis();
-                        starttimer();
-                    }
-                    //Setting the Calendar date and time to the given date and time
-                }catch(ParseException e){
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
     @Override
     protected void onStop() {
@@ -111,6 +125,7 @@ public class Main3Activity extends AppCompatActivity {
         editor.putLong("timeleft",timeleft);
         editor.putBoolean("mtimerunning",mtimerunning);
         editor.putLong("endtime",endtime);
+        editor.putString("sd",sd);
         editor.apply();
     }
 
