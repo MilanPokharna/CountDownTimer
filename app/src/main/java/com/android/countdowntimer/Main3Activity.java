@@ -51,6 +51,7 @@ public class Main3Activity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 mtimerunning = false;
+                Toast.makeText(Main3Activity.this, "finish", Toast.LENGTH_SHORT).show();
                 timer.setText("Quiz has been Started");
             }
         }.start();
@@ -72,7 +73,7 @@ public class Main3Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 sdate = dataSnapshot.getValue().toString();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-                Toast.makeText(Main3Activity.this, "time "+sdate, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Main3Activity.this, "time "+sdate, Toast.LENGTH_SHORT).show();
                 try{
                     //formatting the dateString to convert it into a Date
                     Date date = sdf.parse(sdate);
@@ -122,6 +123,7 @@ public class Main3Activity extends AppCompatActivity {
             if (timeleft < 0) {
                 mtimerunning = false;
                 timeleft = Long.valueOf(0);
+                Toast.makeText(this, "on start", Toast.LENGTH_SHORT).show();
                 timer.setText("Quiz has been Started");
             }
             else
