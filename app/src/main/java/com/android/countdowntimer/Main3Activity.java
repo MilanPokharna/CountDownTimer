@@ -23,7 +23,7 @@ import java.util.Locale;
 
 public class Main3Activity extends AppCompatActivity {
     TextView timer;
-    public Long endtime,timeleft;
+    public Long endtime= Long.valueOf(0),timeleft= Long.valueOf(00);
     String sdate="";
     public CountDownTimer countdowntimer;
     public Boolean mtimerunning=false;
@@ -72,6 +72,7 @@ public class Main3Activity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 sdate = dataSnapshot.getValue().toString();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+                Toast.makeText(Main3Activity.this, "time "+sdate, Toast.LENGTH_SHORT).show();
                 try{
                     //formatting the dateString to convert it into a Date
                     Date date = sdf.parse(sdate);

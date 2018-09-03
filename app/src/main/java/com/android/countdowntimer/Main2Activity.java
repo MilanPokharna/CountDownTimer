@@ -72,6 +72,7 @@ public class Main2Activity extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(Main2Activity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        i1++;
                         tdate.setText(""+i2+"-"+i1+"-"+i);
                         d=""+i2+"-"+i1+"-"+i;
                     }
