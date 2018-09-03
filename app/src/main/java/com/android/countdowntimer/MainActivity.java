@@ -211,32 +211,7 @@ public class MainActivity extends AppCompatActivity {
         String t = String.format(Locale.getDefault(),"%02d:%02d:%02d",hour,min,sec);
         time.setText(t);
         }
-//
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putLong("timeleft",timeleft);
-//        outState.putBoolean("mtimerunning",mtimerunning);
-//        outState.putLong("endtime",endtime);
-//        outState.putString("time",selectedtime.getText().toString());
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        timeleft = savedInstanceState.getLong("timeleft");
-//        mtimerunning = savedInstanceState.getBoolean("mtimerunning");
-//        selectedtime.setText(savedInstanceState.getString("time"));
-//        updatebutton();
-//        update();
-//        if (mtimerunning)
-//        {
-//            endtime = savedInstanceState.getLong("endtime");
-//            timeleft = endtime - System.currentTimeMillis();
-//            starttimer();
-//        }
-//
-//    }
+
 
     @Override
     protected void onStop() {
