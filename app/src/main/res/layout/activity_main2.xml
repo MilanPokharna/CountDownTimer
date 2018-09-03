@@ -41,7 +41,6 @@
         android:layout_marginTop="16dp"
         android:layout_below="@id/texttime"
         android:id="@+id/buttonsend"
-        android:onClick="send"
         android:layout_centerHorizontal="true"
         android:text="Send Data to firebase"
         android:layout_width="wrap_content"

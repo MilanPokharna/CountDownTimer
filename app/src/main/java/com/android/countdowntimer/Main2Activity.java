@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,6 +37,7 @@ public class Main2Activity extends AppCompatActivity {
         bdate = (Button)findViewById(R.id.buttondate);
         btime = (Button)findViewById(R.id.buttontime);
         bnext = (Button)findViewById(R.id.next);
+        send = (Button)findViewById(R.id.buttonsend);
 
         btime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,24 +77,38 @@ public class Main2Activity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-    }
 
+        send.setOnClickListener(new View.OnClickListener() {
 
-    public void send(View view) {
-        if (!(t2.isEmpty()) && !(d.isEmpty()))
-        {
-            string = d+" "+t;
-            if (isNetworkConnected())
-            {
-                ref.child("1").child("quiztime").setValue(string);
-                Toast.makeText(this, "time uploaded", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onClick(View view) {
+
+                if (!(t2.isEmpty()) && !(d.isEmpty()))
+                {
+                    string = d+" "+t;
+                    if (isNetworkConnected())
+                    {
+                        ref.child("1").child("quiztime").setValue(string).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(Main2Activity.this, "time uploaded", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                    else
+                    {
+                        Toast.makeText(Main2Activity.this, "no internet connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(Main2Activity.this, "Please select date and time", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        else
-        {
-            Toast.makeText(this, "Please select date and time", Toast.LENGTH_SHORT).show();
-        }
+        });
     }
+
 
     public void timer(View view) {
     }
