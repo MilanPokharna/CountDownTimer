@@ -34,6 +34,9 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
         timer = (TextView)findViewById(R.id.counttimer);
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        timeleft = prefs.getLong("timeleft",0);
+        mtimerunning = prefs.getBoolean("mtimerunning",false);
         if(!mtimerunning)
             gettime();
 
@@ -63,8 +66,10 @@ public class Main3Activity extends AppCompatActivity {
         int min = (int) (timeleft/1000)/60;
         int sec = (int) (timeleft/1000)%60;
 
-        String t = String.format(Locale.getDefault(),"%02d:%02d:%02d",hour,min,sec);
-        timer.setText(t);
+        String t = String.format(Locale.getDefault(),"%02dh",hour);
+        String t2 = String.format(Locale.getDefault(),"%02dm",min);
+        String t3 = String.format(Locale.getDefault(),"02ds",sec);
+        timer.setText(t+":"+t2+":"+t3);
     }
     public void gettime() {
 
