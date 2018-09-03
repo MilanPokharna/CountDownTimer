@@ -55,7 +55,7 @@ public class Main3Activity extends AppCompatActivity {
                         Date date = sdf.parse(sdate);
                         if (date.getTime() < System.currentTimeMillis())
                         {
-                            Toast.makeText(Main3Activity.this, "Quiz Time Gone", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Main3Activity.this, "Quiz Time Gone", Toast.LENGTH_SHORT).show();
                             timer.setText("Quiz has been Started");
                         }
                         else {
