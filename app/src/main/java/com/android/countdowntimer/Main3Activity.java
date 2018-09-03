@@ -143,7 +143,7 @@ public class Main3Activity extends AppCompatActivity {
             if (timeleft < 0) {
                 mtimerunning = false;
                 timeleft = Long.valueOf(0);
-                Toast.makeText(this, "on start", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "on start", Toast.LENGTH_SHORT).show();
                 timer.setText("Quiz has been Started");
             }
             else
