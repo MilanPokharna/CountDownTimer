@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Main3Activity extends AppCompatActivity {
     TextView timer;
@@ -57,6 +58,9 @@ public class Main3Activity extends AppCompatActivity {
                         {
                             //Toast.makeText(Main3Activity.this, "Quiz Time Gone", Toast.LENGTH_SHORT).show();
                             timer.setText("Quiz has been Started");
+                            SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putBoolean("mtimerunning",false);
                         }
                         else {
                             timeleft = date.getTime() - System.currentTimeMillis();
@@ -107,14 +111,15 @@ public class Main3Activity extends AppCompatActivity {
                 endtime= Long.valueOf(0);
             }
         }.start();
-        mtimerunning =true;
     }
 
     private void update() {
-        int hour = (int) ((timeleft/1000)/60/60)%60;
+//        int hour = (int) ((timeleft/1000)/60/60)%60;
         final int m = (int)((timeleft/1000/60))%60;
 //        int min = (int) (timeleft/1000)/60;
         int sec = (int) (timeleft/1000)%60;
+
+        int hour = (int) TimeUnit.MILLISECONDS.toHours(timeleft);
 
         String t = String.format(Locale.getDefault(),"%02dh",hour);
 //        String t2 = String.format(Locale.getDefault(),"%02d",min);
@@ -154,6 +159,8 @@ public class Main3Activity extends AppCompatActivity {
             else
                 starttimer();
         }
+        else
+            timer.setText("Quiz has been Started");
     }
 
 }
