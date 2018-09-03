@@ -3,6 +3,7 @@ package com.android.countdowntimer;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
@@ -118,6 +119,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     public void timer(View view) {
+        Intent intent =
     }
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
