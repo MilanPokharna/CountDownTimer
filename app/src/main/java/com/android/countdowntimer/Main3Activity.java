@@ -35,7 +35,7 @@ public class Main3Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
         timer = (TextView)findViewById(R.id.counttimer);
         SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
-        timeleft = prefs.getLong("timeleft",0);
+//        timeleft = prefs.getLong("timeleft",0);
         sd= prefs.getString("sd","0");
         mtimerunning = prefs.getBoolean("mtimerunning",false);
 
@@ -76,6 +76,7 @@ public class Main3Activity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
             }
 
             @Override
@@ -98,6 +99,7 @@ public class Main3Activity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 mtimerunning = false;
+
                 //Toast.makeText(Main3Activity.this, "finish", Toast.LENGTH_SHORT).show();
                 timer.setText("Quiz has been Started");
             }
