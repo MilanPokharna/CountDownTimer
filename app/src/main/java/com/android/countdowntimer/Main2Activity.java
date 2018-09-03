@@ -119,7 +119,8 @@ public class Main2Activity extends AppCompatActivity {
 
 
     public void timer(View view) {
-        Intent intent =
+        Intent intent = new Intent(Main2Activity.this,Main3Activity.class);
+        startActivity(intent);
     }
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
