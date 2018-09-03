@@ -103,6 +103,7 @@ public class Main3Activity extends AppCompatActivity {
                     countdowntimer.cancel();
                 //Toast.makeText(Main3Activity.this, "finish", Toast.LENGTH_SHORT).show();
                 timer.setText("Quiz has been Started");
+                timeleft= Long.valueOf(0);
             }
         }.start();
         mtimerunning =true;
