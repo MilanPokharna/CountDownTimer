@@ -1,3 +1,3 @@
 # CountDownTimer
 ## Count Down Timer is a timer used in one of my Application.
-### This is just an Example
+### This is just an Example showing how we can use down count timer.
